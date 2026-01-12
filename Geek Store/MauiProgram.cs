@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using GeekStore.Shared.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Geek_Store
 {
@@ -19,7 +21,18 @@ namespace Geek_Store
     		builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, "geekstore.db3");
+            builder.Services.AddSingleton<GeekStoreDataContext>(_ => new GeekStoreDataContext(dbPath));
+
+            var app = builder.Build();
+
+            using(var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<GeekStoreDataContext>();
+                db.Database.Migrate();
+            }
+
+            return app;
         }
     }
 }
