@@ -8,5 +8,7 @@
 
         public DateTime DataVenda { get; set; }
         public decimal ValorTotal { get; set; }
+
+        public ICollection<VendaItem> VendaItens { get; set; } = new List<VendaItem>();
     }
 }

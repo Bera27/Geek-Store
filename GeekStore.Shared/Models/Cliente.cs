@@ -7,5 +7,7 @@
         public string Cpf { get; set; }
         public string Telefone { get; set; }
         public DateTime DataCadastro { get; set; }
+
+        public ICollection<Endereco> Enderecos { get; set; } = new List<Endereco>();
     }
 }
