@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Geek_Store.Views.ProdutosTela"
+             Title="ProdutosTela"
+             Shell.NavBarIsVisible="False">
+
+    <VerticalStackLayout>
+        <!-- Barra de Pessquisa e Imagem de adicionar produto -->
+        <Grid ColumnDefinitions="*,*">
+            
+            <SearchBar x:Name="txt_searchBar" 
+                       Placeholder="Buscar Produtos"
+                       WidthRequest="700"
+                       Grid.Column="0"
+                       Margin="0,0,-1000,0"
+                       TextChanged="SearchBar_TextChanged"/>
+
+            <Image Source="adicionarproduto.png"
+                   Grid.Column="1"
+                   WidthRequest="50"
+                   Margin="0,0,180,0"
+                   HeightRequest="50">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
+                                          NumberOfTapsRequired="1"/>
+                </Image.GestureRecognizers>
+            </Image>
+        </Grid>
+        
+        <!-- CollectionView -->
+        <Border HeightRequest="700"
+                WidthRequest="1000"
+                Margin="25">
+
+            <CollectionView x:Name="CollectionViewProduto">
+                <CollectionView.Header>
+                    <!--Header-->
+                    <Grid ColumnDefinitions="auto,auto,auto,auto,auto,auto" 
+                          RowDefinitions="*"
+                          ColumnSpacing="90"
+                          Padding="5"
+                          Background="{StaticResource Gray200}">
+
+                        <Label Text="Id" Grid.Column="0" FontSize="24" FontAttributes="Bold" Margin="10,0,0,0"/>
+                        <Label Text="Nome" Grid.Column="1" FontSize="24" FontAttributes="Bold"/>
+                        <Label Text="Descrição" Grid.Column="2" FontSize="24" FontAttributes="Bold"/>
+                        <Label Text="Quantidade" Grid.Column="3" FontSize="24" FontAttributes="Bold"/>
+                        <Label Text="Preço de compra" Grid.Column="4" FontSize="24" FontAttributes="Bold"/>
+                        <Label Text="Preço de venda" Grid.Column="5" FontSize="24" FontAttributes="Bold"/>
+                    </Grid>
+                </CollectionView.Header>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="5" >
+                            <Grid ColumnDefinitions="135,150,255,290,*,*" 
+                                  RowDefinitions="*"
+                                  Padding="5">
+                                
+                                <Label Text="{Binding Id}" Grid.Column="0" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold" Margin="10,0,0,0"/>
+                                <Label Text="{Binding Nome}" Grid.Column="1" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold" />
+                                <Label Text="{Binding Descricao}" Grid.Column="2" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold" />
+                                <Label Text="{Binding Quantidade}" Grid.Column="3" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold" />
+                                <Label Text="{Binding PrecoCompra, StringFormat='{}{0:C}'}" Grid.Column="4" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold"/>
+                                <Label Text="{Binding PrecoVenda, StringFormat='{}{0:C}'}" Grid.Column="5" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
+        
+        
+    </VerticalStackLayout>
+</ContentPage>
