@@ -54,7 +54,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="5" >
-                            <Grid ColumnDefinitions="135,150,255,290,*,*" 
+                            <Grid ColumnDefinitions="*,*,*,*,*,*,*" 
                                   RowDefinitions="*"
                                   Padding="5">
                                 
@@ -64,6 +64,12 @@
                                 <Label Text="{Binding Quantidade}" Grid.Column="3" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold" />
                                 <Label Text="{Binding PrecoCompra, StringFormat='{}{0:C}'}" Grid.Column="4" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold"/>
                                 <Label Text="{Binding PrecoVenda, StringFormat='{}{0:C}'}" Grid.Column="5" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold"/>
+
+                                <ImageButton Grid.Column="6"
+                                             Source="latadelixo.png"
+                                             WidthRequest="30"
+                                             HeightRequest="30"
+                                             Clicked="ImageButton_Clicked"/>
                             </Grid>
                         </Border>
                     </DataTemplate>

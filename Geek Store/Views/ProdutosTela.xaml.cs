@@ -65,4 +65,33 @@ public partial class ProdutosTela : ContentPage
 
         CollectionViewProduto.ItemsSource = produtosList;
     }
+
+    private async void ImageButton_Clicked(object sender, EventArgs e)
+    {
+        var button = (ImageButton)sender;
+
+        dynamic itemSelect = button.BindingContext;
+
+        int id = itemSelect.Id;
+        string nome = itemSelect.Nome;
+
+        bool confirmacao = await DisplayAlert("Excluir", $"Tem certeza que deseja EXCLUIR o produto: 'ID: {id} - {nome}'", "Sim", "Não");
+        if(confirmacao)
+        {
+            try
+            {
+                var produto = await _context.Produtos.FirstOrDefaultAsync(x => x.Id == id);
+                if (produto == null)
+                    return;
+
+                _context.Remove(produto);
+                await _context.SaveChangesAsync();
+
+                await CarregarDados();
+                await DisplayAlert("Sucesso!", "Produto removido com sucesso!", "Ok");
+            }
+            catch (Exception ex)
+            { await DisplayAlert("Ops", $"Erro - PT01: {ex.Message}", "Ok"); }
+        }
+    }
 }
