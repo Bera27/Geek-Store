@@ -14,9 +14,31 @@ public partial class ProdutosTela : ContentPage
 	}
     private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
         => Shell.Current.GoToAsync("adicionarProdutosTela");
-    private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
+        var busca = e.NewTextValue;
 
+        if (string.IsNullOrWhiteSpace(busca))
+        {
+            await CarregarDados();
+            return;
+        }
+
+        var consulta = await _context.Produtos
+                        .AsNoTracking()
+                        .Where(x => x.Nome.ToLower().Contains(busca.ToLower()))
+                        .Select(p => new
+                        {
+                            p.Id,
+                            p.Nome,
+                            p.Descricao,
+                            p.PrecoCompra,
+                            p.PrecoVenda,
+                            Quantidade = p.Estoques.Select(q => q.Quantidade).FirstOrDefault()
+                        })
+                        .ToListAsync();
+
+        CollectionViewProduto.ItemsSource = consulta;
     }
 
     protected override async void OnAppearing()
