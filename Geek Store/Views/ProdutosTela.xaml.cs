@@ -13,8 +13,9 @@ public partial class ProdutosTela : ContentPage
 		InitializeComponent();
         _context = context;
 	}
-    private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    private void ImagemButton_GoTo(object sender, EventArgs e)
         => Shell.Current.GoToAsync("adicionarProdutosTela");
+
     private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
         var busca = e.NewTextValue;
@@ -37,7 +38,6 @@ public partial class ProdutosTela : ContentPage
     {
         base.OnAppearing();
         await CarregarDados();
-        
     }
 
     public async Task CarregarDados()
@@ -49,7 +49,7 @@ public partial class ProdutosTela : ContentPage
         CollectionViewProduto.ItemsSource = produtosList;
     }
 
-    private async void ImageButton_Clicked(object sender, EventArgs e)
+    private async void ImageButton_Excluir(object sender, EventArgs e)
     {
         var button = (ImageButton)sender;
 

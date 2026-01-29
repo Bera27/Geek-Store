@@ -3,7 +3,6 @@ using GeekStore.Shared.Data;
 using GeekStore.Shared.Models;
 
 namespace Geek_Store.Views;
-
 public partial class AdicionarProdutosTela : ContentPage
 {
 	private readonly GeekStoreDataContext _context;
@@ -20,6 +19,12 @@ public partial class AdicionarProdutosTela : ContentPage
 		var inputCompra = txt_PrecoCompra.Text.Trim();
 		var inputVenda = txt_PrecoVenda.Text.Trim();
 		var inputQuantidade = txt_Quantidade.Text;
+
+		if(string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(descricao))
+		{
+			await DisplayAlert("Alerta", "Preencha todos os campos", "OK");
+			return;
+        }
 
         // Verifica se valor de compra e venda são válidos e converte para decimal
         if (!decimal.TryParse(inputCompra, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal precoCompra)

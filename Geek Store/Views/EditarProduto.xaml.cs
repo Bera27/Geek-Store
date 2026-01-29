@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Threading.Tasks;
 using GeekStore.Shared.Data;
 using GeekStore.Shared.Models;
 using Microsoft.EntityFrameworkCore;
@@ -56,14 +55,22 @@ public partial class EditarProduto : ContentPage
         var inputVenda = txt_PrecoVenda.Text.Trim();
         var inputQuantidade = txt_Quantidade.Text;
 
-		if (!decimal.TryParse(inputCompra, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal precoCompra)
+        if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(descricao))
+        {
+            await DisplayAlert("Alerta", "Preencha todos os campos", "OK");
+            return;
+        }
+
+        // Verifica se valor de compra e venda são válidos e converte para decimal
+        if (!decimal.TryParse(inputCompra, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal precoCompra)
 			|| !decimal.TryParse(inputVenda, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal precoVenda))
 		{
             await DisplayAlert("Alerta", "Valor de compra ou venda inválido!", "OK");
             return;
         }
 
-		if (!int.TryParse(inputQuantidade, out var quantidade))
+        // Verifica se Quantidade é válido e converte para int
+        if (!int.TryParse(inputQuantidade, out var quantidade))
 		{
 			await DisplayAlert("Alerta", "Valor de quantidade inválido!", "OK");
 			return;
@@ -71,18 +78,15 @@ public partial class EditarProduto : ContentPage
 
 		try
 		{
-			var editProd = new Produto
-			{
-				Id = ProdRecebido.Id,
-				Nome = nome,
-				Descricao = descricao,
-				PrecoCompra = precoCompra,
-				PrecoVenda = precoVenda,
-				Quantidade = quantidade
-			};
+            ProdRecebido.Nome = nome;
+            ProdRecebido.Descricao = descricao;
+            ProdRecebido.PrecoCompra = precoCompra;
+            ProdRecebido.PrecoVenda = precoVenda;
+            ProdRecebido.Quantidade = quantidade;
 
-			_context.Update(editProd);
+            _context.Produtos.Update(ProdRecebido);
 			await _context.SaveChangesAsync();
+
             await DisplayAlert("Sucesso", $"Produto '{nome}' atualizado com sucesso!", "OK");
 			await Shell.Current.GoToAsync("produtosTela");
         }
