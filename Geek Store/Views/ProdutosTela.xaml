@@ -33,7 +33,9 @@
                 WidthRequest="1000"
                 Margin="25">
 
-            <CollectionView x:Name="CollectionViewProduto">
+            <CollectionView x:Name="CollectionViewProduto" 
+                            SelectionChanged="CollectionViewProduto_SelectionChanged" 
+                            SelectionMode="Single">
                 <CollectionView.Header>
                     <!--Header-->
                     <Grid ColumnDefinitions="auto,auto,auto,auto,auto,auto" 
@@ -50,14 +52,14 @@
                         <Label Text="Preço de venda" Grid.Column="5" FontSize="24" FontAttributes="Bold"/>
                     </Grid>
                 </CollectionView.Header>
-                
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="5" >
                             <Grid ColumnDefinitions="*,*,*,*,*,*,*" 
                                   RowDefinitions="*"
                                   Padding="5">
-                                
+
                                 <Label Text="{Binding Id}" Grid.Column="0" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold" Margin="10,0,0,0"/>
                                 <Label Text="{Binding Nome}" Grid.Column="1" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold" />
                                 <Label Text="{Binding Descricao}" Grid.Column="2" FontSize="15" VerticalTextAlignment="Center"  FontAttributes="Bold" />
@@ -76,7 +78,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </Border>
-        
-        
     </VerticalStackLayout>
 </ContentPage>

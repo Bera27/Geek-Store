@@ -71,6 +71,9 @@
 	  <MauiXaml Update="Views\AdicionarProdutosTela.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\EditarProduto.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\ProdutosTela.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

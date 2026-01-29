@@ -20,17 +20,17 @@ public partial class AdicionarProdutosTela : ContentPage
 		var inputCompra = txt_PrecoCompra.Text.Trim();
 		var inputVenda = txt_PrecoVenda.Text.Trim();
 		var inputQuantidade = txt_Quantidade.Text;
-		
-		// Verifica se valor de compra e venda são válidos
-		if(!decimal.TryParse(inputCompra, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal precoCompra)
+
+        // Verifica se valor de compra e venda são válidos e converte para decimal
+        if (!decimal.TryParse(inputCompra, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal precoCompra)
 			|| !decimal.TryParse(inputVenda, NumberStyles.Number, CultureInfo.CurrentCulture, out decimal precoVenda))
 		{
 			await DisplayAlert("Alerta", "Valor de compra ou venda inválido!", "OK");
 			return;
 		}
 
-		// Verifica se Quantidade é válido
-		if(!int.TryParse(inputQuantidade, NumberStyles.Number, CultureInfo.CurrentCulture, out int quantidade))
+        // Verifica se Quantidade é válido e converte para int
+        if (!int.TryParse(inputQuantidade, out int quantidade))
 		{
             await DisplayAlert("Alerta", "Valor de quantidade inválido!", "OK");
             return;
@@ -44,31 +44,16 @@ public partial class AdicionarProdutosTela : ContentPage
 				Descricao = descricao,
 				PrecoCompra = precoCompra,
 				PrecoVenda = precoVenda,
+				Quantidade = quantidade
 			};
 
-			await using var transaction = await _context.Database.BeginTransactionAsync(); // Inicia uma transação para produto e estoque
 
 			await _context.Produtos.AddAsync(NovoProduto);
 			await _context.SaveChangesAsync();
 
-			var estoque = new Estoque
-			{
-				IdProduto = NovoProduto.Id,
-				Produto = NovoProduto,
-				Quantidade = quantidade
-			};
-
-			await _context.Estoques.AddAsync(estoque);
-			await _context.SaveChangesAsync();
-
-			await transaction.CommitAsync(); // Finaliza a transação
-
 			await DisplayAlert("Sucesso", $"Produto '{nome}' salvo com sucesso!", "OK");
 			await Shell.Current.GoToAsync("produtosTela");
         } 
-		catch(Exception ex)
-		{
-            await DisplayAlert("Ops", $"Erro - AP01: {ex.Message}", "OK");
-        }
+		catch(Exception ex) { await DisplayAlert("Ops", $"Erro - AP01: {ex.Message}", "OK"); }
     }
 }

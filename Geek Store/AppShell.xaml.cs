@@ -14,6 +14,7 @@ namespace Geek_Store
         {
             Routing.RegisterRoute("produtosTela", typeof(ProdutosTela));
             Routing.RegisterRoute("adicionarProdutosTela", typeof(AdicionarProdutosTela));
+            Routing.RegisterRoute("editarProduto", typeof(EditarProduto));
         }
     }
 }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using GeekStore.Shared.Data;
+using GeekStore.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Geek_Store.Views;
@@ -27,15 +28,6 @@ public partial class ProdutosTela : ContentPage
         var consulta = await _context.Produtos
                         .AsNoTracking()
                         .Where(x => x.Nome.ToLower().Contains(busca.ToLower()))
-                        .Select(p => new
-                        {
-                            p.Id,
-                            p.Nome,
-                            p.Descricao,
-                            p.PrecoCompra,
-                            p.PrecoVenda,
-                            Quantidade = p.Estoques.Select(q => q.Quantidade).FirstOrDefault()
-                        })
                         .ToListAsync();
 
         CollectionViewProduto.ItemsSource = consulta;
@@ -52,15 +44,6 @@ public partial class ProdutosTela : ContentPage
     {
         var produtosList = await _context.Produtos
                                   .AsNoTracking()
-                                  .Select(p => new
-                                  {
-                                      p.Id,
-                                      p.Nome,
-                                      p.Descricao,
-                                      p.PrecoCompra,
-                                      p.PrecoVenda,
-                                      Quantidade = p.Estoques.Select(q => q.Quantidade).FirstOrDefault(),
-                                  })
                                   .ToListAsync();
 
         CollectionViewProduto.ItemsSource = produtosList;
@@ -93,5 +76,18 @@ public partial class ProdutosTela : ContentPage
             catch (Exception ex)
             { await DisplayAlert("Ops", $"Erro - PT01: {ex.Message}", "Ok"); }
         }
+    }
+
+    private async void CollectionViewProduto_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selecionado = e.CurrentSelection?.FirstOrDefault();
+
+        if(selecionado is Produto produto)
+        {
+            await Shell.Current.GoToAsync($"editarProduto?id={produto.Id}");
+        }
+
+        if (sender is CollectionView cv)
+            cv.SelectedItem = null;
     }
 }
